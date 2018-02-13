@@ -1,18 +1,29 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
 import './App.css';
+import { Container, Row, Col } from 'reactstrap';
+import { Button } from 'reactstrap';
+import TodoList from './components/TodoList'
 
 class App extends Component {
   render() {
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Welcome to React</h1>
-        </header>
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
+      <div>
+        <Container fluid={true}>
+          <h1 className='text-center'>The Todo Timer</h1>
+          <br/>
+          <Row>
+            <Col xs={12} sm={6}>
+              <div className='text-center'>
+                <TodoList />
+              </div>
+            </Col>
+            <Col xs={12} sm={6}>
+              <div className='text-center'>
+                Timer
+              </div>
+            </Col>
+          </Row>
+        </Container>
       </div>
     );
   }
