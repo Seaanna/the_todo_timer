@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
 import './App.css';
 import { Container, Row, Col } from 'reactstrap';
-import { Button } from 'reactstrap';
 import TodoList from './components/TodoList'
+import Timer from './components/Timer'
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 
 class App extends Component {
   render() {
     return (
-      <div>
+      <MuiThemeProvider>
         <Container fluid={true}>
           <h1 className='text-center'>The Todo Timer</h1>
           <br/>
@@ -19,12 +20,12 @@ class App extends Component {
             </Col>
             <Col xs={12} sm={6}>
               <div className='text-center'>
-                Timer
+                <Timer />
               </div>
             </Col>
           </Row>
         </Container>
-      </div>
+      </MuiThemeProvider>
     );
   }
 }
