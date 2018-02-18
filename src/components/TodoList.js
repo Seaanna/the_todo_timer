@@ -1,19 +1,57 @@
 import React, { Component } from 'react';
 import { Row, Col } from 'reactstrap';
-import { ListGroup, ListGroupItem } from 'reactstrap';
+import Divider from 'material-ui/Divider';
 import Paper from 'material-ui/Paper';
 import TextField from './TextField';
 import ContentAdd from 'material-ui/svg-icons/content/add';
 import FloatingActionButton from 'material-ui/FloatingActionButton';
+import Checkbox from 'material-ui/Checkbox';
+import Owl from '../images/owl_books.png';
+import Delete from 'material-ui-icons/Delete';
 
 const styles = {
   todoList: {
-    height: 400,
+    height: 350,
     textAlign: "left",
     overflow: "scroll"
   },
   textField: {
-    marginRight: 10,
+    marginRight: 10
+  },
+  missingText: {
+    marginTop: 50,
+    color: 'grey'
+  },
+  todo: {
+    padding: '15px 15px',
+    margin: 0,
+  },
+  checkbox: {
+    display: 'inline-block',
+    position: 'relative',
+    top: 5
+  },
+  todoText: {
+    display: 'inline-block',
+    position: 'relative',
+    fontSize: 18
+  },
+  todoCompleted: {
+    display: 'inline-block',
+    position: 'relative',
+    fontSize: 18,
+    color: 'grey',
+    textDecoration: 'line-through'
+  },
+  inline: {
+    display: 'inline-block'
+  },
+  delete: {
+    width: 25,
+    height: 25,
+    position: 'relative',
+    top: 4,
+    cursor: 'pointer'
   }
 }
 
@@ -22,7 +60,7 @@ class TodoList extends Component {
     super(props);
     this.state = {
       todos: [],
-      newTodo: {name: ''}
+      newTodo: {name: '', completed: false}
     };
   }
 
@@ -31,18 +69,55 @@ class TodoList extends Component {
 
     if(this.state.newTodo && this.state.newTodo.name) {
       todos.push(this.state.newTodo)
-      this.setState({todos: todos, newTodo: {name: ''}});
+      this.setState({todos: todos, newTodo: {name: '', completed: false}});
     }
+  }
+
+  removeTodo(index) {
+    let todos = this.state.todos;
+    todos.splice(index, 1);
+    this.setState({todos: todos})
   }
 
   handleInput(event, value){
     this.setState({newTodo: {name: value}})
   }
 
+  handleCheck(index, event, value){
+    let todos = this.state.todos;
+    todos[index]['completed'] = value;
+    this.setState({todos: todos})
+  }
+
   renderTodos(todos) {
     return(
       todos.map((todo, index) => (
-        <ListGroupItem key={todo.name}>{todo.name}</ListGroupItem>
+        <div>
+          <p key={todo.name} style={styles.todo}>
+            <span style={styles.inline}>
+              <Checkbox
+                checked={todo.completed}
+                onCheck={this.handleCheck.bind(this, index)}
+                style={styles.checkbox}
+                iconStyle={{fill: '#1e88e5'}}
+              />
+            </span>
+            <span style={todo.completed ? styles.todoCompleted : styles.todoText}>
+              {todo.name}
+            </span>
+            {
+              !todo.completed &&
+              <span
+                className='float-right'
+                style={styles.inline}
+                onClick={this.removeTodo.bind(this, index)}
+              >
+                <Delete style={styles.delete} color='grey' />
+              </span>
+            }
+          </p>
+          <Divider />
+        </div>
       ))
     );
   }
@@ -50,17 +125,35 @@ class TodoList extends Component {
   render() {
     return (
       <div>
-        <h1 className='text-center'>Todo List</h1>
         <br/>
         <Row>
           <Col xs={{ size: 8, offset: 2 }}>
-            <div style={styles.todoList}>
-            <ListGroup>
-             {this.renderTodos(this.state.todos)}
-            </ListGroup>
-            </div>
-            <br/>
-            <Row>
+            <Paper zDepth={1}>
+              <div style={styles.todoList}>
+                {
+                  this.state.todos.length == 0 &&
+                  <div className='text-center'>
+                    <p style={styles.missingText}>
+                      You need to add some todos to your list!
+                    </p>
+                    <br/>
+                    <br/>
+                    <br/>
+                    <Row>
+                      <Col xs={{ size: 4, offset: 4 }}>
+                        <img src={Owl} alt={"owl"} className='img-fluid' />
+                      </Col>
+                    </Row>
+                  </div>
+                }
+                {
+                 this.state.todos.length > 0 &&
+                 this.renderTodos(this.state.todos)
+                }
+              </div>
+              <br/>
+            </Paper>
+            <Row style={{marginTop: 50}}>
               <Col xs={10}>
                 <TextField
                   style={styles.textField}
@@ -68,6 +161,7 @@ class TodoList extends Component {
                   floatingLabelText="Add New Todo"
                   value={this.state.newTodo.name}
                   onChange={this.handleInput.bind(this)}
+                  onEnter={this.addTodo.bind(this)}
                 />
               </Col>
               <Col xs={2}>

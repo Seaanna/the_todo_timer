@@ -92,6 +92,8 @@ class Timer extends Component {
         </div>
         <br/>
         <br/>
+        <br/>
+        <br/>
         <Row>
           <Col xs={4}>
             <div className='text-right'>

@@ -10,6 +10,7 @@ class App extends Component {
     return (
       <MuiThemeProvider>
         <Container fluid={true}>
+          <br/>
           <h1 className='text-center'>The Todo Timer</h1>
           <br/>
           <Row>
