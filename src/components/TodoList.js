@@ -46,7 +46,7 @@ class TodoList extends Component {
           value={this.state.newTodo.name}
           onChange={this.handleInput.bind(this)}
         />
-        <Button
+        <Button 
           color="success"
           onClick={this.addTodo.bind(this)}
         >
