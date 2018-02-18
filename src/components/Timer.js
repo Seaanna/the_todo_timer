@@ -1,44 +1,73 @@
 import React, { Component } from 'react';
-import { Button } from 'reactstrap';
+import { Container, Row, Col } from 'reactstrap';
+import PlayArrow from 'material-ui-icons/PlayArrow';
+import Stop from 'material-ui-icons/Stop';
+import Refresh from 'material-ui-icons/Refresh';
+import FloatingActionButton from 'material-ui/FloatingActionButton';
+
+
+
+const styles = {
+  timer: {
+    fontSize: 30,
+    marginTop: 100
+  }
+}
 
 class Timer extends Component {
   constructor() {
     super();
-    this.state = { time: {}, seconds: 20 };
-    this.timer = 0;
+    this.state = {
+      seconds: 1500,
+      timerInterval: null
+    };
+
     this.startTimer = this.startTimer.bind(this);
+    this.stopTimer = this.stopTimer.bind(this);
     this.countDown = this.countDown.bind(this);
+    this.resetTimer = this.resetTimer.bind(this);
+    this.secondsToTime = this.secondsToTime.bind(this);
   }
 
   secondsToTime(secs){
-    let hours = Math.floor(secs / (60 * 60));
+    const hours = Math.floor(secs / (60 * 60));
+    const divisor_for_minutes = secs % (60 * 60);
+    const minutes = Math.floor(divisor_for_minutes / 60);
+    const divisor_for_seconds = divisor_for_minutes % 60;
+    const seconds = Math.ceil(divisor_for_seconds);
+    const timeString = this.formatNumber(hours) + ':' +
+      this.formatNumber(minutes) + ':' + this.formatNumber(seconds);
 
-    let divisor_for_minutes = secs % (60 * 60);
-    let minutes = Math.floor(divisor_for_minutes / 60);
-
-    let divisor_for_seconds = divisor_for_minutes % 60;
-    let seconds = Math.ceil(divisor_for_seconds);
-
-    let obj = {
-      "h": hours,
-      "m": minutes,
-      "s": seconds
-    };
-    return obj;
+    return timeString;
   }
-// componentDidMount() is invoked immediately after a component is mounted.
-// Initialization that requires DOM nodes should go here.
-// If you need to load data from a remote endpoint,
-// this is a good place to instantiate the network request.
+
+  // componentDidMount() is invoked immediately after a component is mounted.
+  // Initialization that requires DOM nodes should go here.
+  // If you need to load data from a remote endpoint,
+  // this is a good place to instantiate the network request.
   componentDidMount() {
     let timeLeft = this.secondsToTime(this.state.seconds);
     this.setState({ time: timeLeft });
   }
 
   startTimer() {
-    if (this.timer == 0) {
-      this.timer = setInterval(this.countDown, 1000);
+    if (this.state.timerInterval === null) {
+      this.setState({ timerInterval: setInterval(this.countDown, 1000) });
     }
+  }
+
+  stopTimer() {
+    clearInterval(this.state.timerInterval);
+    this.setState({ timerInterval: null });
+  }
+
+  resetTimer() {
+    this.stopTimer();
+    this.setState({seconds: 1500});
+  }
+
+  formatNumber(number){
+    return number > 9 ? "" + number : "0" + number;
   }
 
   countDown() {
@@ -50,22 +79,42 @@ class Timer extends Component {
     });
 
     // Check if we're at zero.
-    if (seconds == 0) {
-      clearInterval(this.timer);
+    if (seconds === 0) {
+      this.stopTimer();
     }
   }
 
   render() {
     return(
       <div>
-      <h1 className='text-center'>Timer</h1>
-      <br/>
-      <br/>
-        m: {this.state.time.m} s: {this.state.time.s}
+        <div className='digital' style={styles.timer}>
+          {this.secondsToTime(this.state.seconds)}
+        </div>
         <br/>
         <br/>
-        <Button color="primary" onClick={this.startTimer}>Start</Button>
-        <Button color="warning">Pause</Button>
+        <Row>
+          <Col xs={4}>
+            <div className='text-right'>
+              <FloatingActionButton onClick={this.startTimer} backgroundColor="#43a047">
+                <PlayArrow />
+              </FloatingActionButton>
+            </div>
+          </Col>
+          <Col xs={4}>
+            <div className='text-center'>
+              <FloatingActionButton onClick={this.stopTimer} backgroundColor="#e53935">
+                <Stop />
+              </FloatingActionButton>
+            </div>
+          </Col>
+          <Col xs={4}>
+            <div className='text-left'>
+              <FloatingActionButton onClick={this.resetTimer} backgroundColor="#1e88e5">
+                <Refresh />
+              </FloatingActionButton>
+            </div>
+          </Col>
+        </Row>
       </div>
     );
   }

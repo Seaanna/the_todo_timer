@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { Button } from 'reactstrap';
-import TextField from 'material-ui/TextField';
+import TextField from './TextField';
+import ContentAdd from 'material-ui/svg-icons/content/add';
+import FloatingActionButton from 'material-ui/FloatingActionButton';
 
 class TodoList extends Component {
   constructor(props) {
@@ -46,12 +48,9 @@ class TodoList extends Component {
           value={this.state.newTodo.name}
           onChange={this.handleInput.bind(this)}
         />
-        <Button 
-          color="success"
-          onClick={this.addTodo.bind(this)}
-        >
-          Create
-        </Button>
+        <FloatingActionButton onClick={this.addTodo.bind(this)} backgroundColor="#1e88e5">
+          <ContentAdd />
+        </FloatingActionButton>
       </div>
     );
   }

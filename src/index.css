@@ -3,3 +3,12 @@ body {
   padding: 0;
   font-family: sans-serif;
 }
+
+@font-face {
+  font-family: 'Digital';
+  src: local('Digital'), url(./fonts/Digital.ttf) format('truetype');
+}
+
+.digital {
+  font-family: 'Digital';
+}
