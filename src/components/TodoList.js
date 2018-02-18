@@ -1,8 +1,21 @@
 import React, { Component } from 'react';
-import { Button } from 'reactstrap';
+import { Row, Col } from 'reactstrap';
+import { ListGroup, ListGroupItem } from 'reactstrap';
+import Paper from 'material-ui/Paper';
 import TextField from './TextField';
 import ContentAdd from 'material-ui/svg-icons/content/add';
 import FloatingActionButton from 'material-ui/FloatingActionButton';
+
+const styles = {
+  todoList: {
+    height: 400,
+    textAlign: "left",
+    overflow: "scroll"
+  },
+  textField: {
+    marginRight: 10,
+  }
+}
 
 class TodoList extends Component {
   constructor(props) {
@@ -29,7 +42,7 @@ class TodoList extends Component {
   renderTodos(todos) {
     return(
       todos.map((todo, index) => (
-        <p key={todo.name}>{todo.name}</p>
+        <ListGroupItem key={todo.name}>{todo.name}</ListGroupItem>
       ))
     );
   }
@@ -39,18 +52,32 @@ class TodoList extends Component {
       <div>
         <h1 className='text-center'>Todo List</h1>
         <br/>
-        {
-          this.renderTodos(this.state.todos)
-        }
-        <br/>
-        <TextField
-          floatingLabelText="Add New Todo"
-          value={this.state.newTodo.name}
-          onChange={this.handleInput.bind(this)}
-        />
-        <FloatingActionButton onClick={this.addTodo.bind(this)} backgroundColor="#1e88e5">
-          <ContentAdd />
-        </FloatingActionButton>
+        <Row>
+          <Col xs={{ size: 8, offset: 2 }}>
+            <div style={styles.todoList}>
+            <ListGroup>
+             {this.renderTodos(this.state.todos)}
+            </ListGroup>
+            </div>
+            <br/>
+            <Row>
+              <Col xs={10}>
+                <TextField
+                  style={styles.textField}
+                  fullWidth={true}
+                  floatingLabelText="Add New Todo"
+                  value={this.state.newTodo.name}
+                  onChange={this.handleInput.bind(this)}
+                />
+              </Col>
+              <Col xs={2}>
+                <FloatingActionButton onClick={this.addTodo.bind(this)} backgroundColor="#1e88e5">
+                  <ContentAdd />
+                </FloatingActionButton>
+              </Col>
+            </Row>
+          </Col>
+        </Row>
       </div>
     );
   }

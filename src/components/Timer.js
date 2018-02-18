@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Container, Row, Col } from 'reactstrap';
+import { Row, Col } from 'reactstrap';
 import PlayArrow from 'material-ui-icons/PlayArrow';
 import Stop from 'material-ui-icons/Stop';
 import Refresh from 'material-ui-icons/Refresh';
