@@ -29,9 +29,14 @@ const styles = {
 }
 
 class App extends Component {
-  state = {
-    settingsOpen: false,
-  };
+  constructor(props) {
+    super();
+
+    this.state = {
+      settingsOpen: false,
+      cycles: [1, 2]
+    };
+  }
 
   handleOpen = () => {
     this.setState({settingsOpen: true});
@@ -63,7 +68,9 @@ class App extends Component {
             </Col>
             <Col xs={12} sm={6}>
               <div className='text-center'>
-                <Timer />
+                <Timer
+                  cycles={this.state.cycles}
+                />
               </div>
             </Col>
           </Row>

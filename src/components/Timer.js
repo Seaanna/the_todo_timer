@@ -4,7 +4,8 @@ import PlayArrow from 'material-ui-icons/PlayArrow';
 import Stop from 'material-ui-icons/Stop';
 import Refresh from 'material-ui-icons/Refresh';
 import FloatingActionButton from 'material-ui/FloatingActionButton';
-
+import Sound from 'react-sound';
+import ding from '../sounds/DING.mp3'
 
 
 const styles = {
@@ -15,11 +16,14 @@ const styles = {
 }
 
 class Timer extends Component {
-  constructor() {
+  constructor(props) {
     super();
+
     this.state = {
-      seconds: 1500,
-      timerInterval: null
+      seconds: this.minutesToSeconds(props.cycles[0]),
+      timerInterval: null,
+      soundStatus: 'STOPPED',
+      cycleIndex: 0
     };
 
     this.startTimer = this.startTimer.bind(this);
@@ -27,6 +31,7 @@ class Timer extends Component {
     this.countDown = this.countDown.bind(this);
     this.resetTimer = this.resetTimer.bind(this);
     this.secondsToTime = this.secondsToTime.bind(this);
+    this.handleSongPlaying = this.handleSongPlaying.bind(this)
   }
 
   secondsToTime(secs){
@@ -39,6 +44,10 @@ class Timer extends Component {
       this.formatNumber(minutes) + ':' + this.formatNumber(seconds);
 
     return timeString;
+  }
+
+  minutesToSeconds(minutes) {
+    return( 60 * minutes );
   }
 
   // componentDidMount() is invoked immediately after a component is mounted.
@@ -63,7 +72,7 @@ class Timer extends Component {
 
   resetTimer() {
     this.stopTimer();
-    this.setState({seconds: 1500});
+    this.setState({seconds: this.props.cycles[0]});
   }
 
   formatNumber(number){
@@ -81,7 +90,24 @@ class Timer extends Component {
     // Check if we're at zero.
     if (seconds === 0) {
       this.stopTimer();
+      const cycleIndex = this.props.cycles[this.state.cycleIndex+1] ? (this.state.cycleIndex+1) : 0;
+      this.setState({
+        soundStatus: 'PLAYING',
+        cycleIndex: cycleIndex,
+        seconds: this.minutesToSeconds(this.props.cycles[cycleIndex])
+      });
+      const timer = this;
+      setTimeout(function(){
+        timer.startTimer();
+      }, 1000);
     }
+  }
+
+  handleSongPlaying() {
+    const timer = this;
+    setTimeout(function(){
+      timer.setState({soundStatus: 'STOPPED'});
+    }, 850);
   }
 
   render() {
@@ -117,6 +143,12 @@ class Timer extends Component {
             </div>
           </Col>
         </Row>
+        <Sound
+          url={ding}
+          playStatus={this.state.soundStatus}
+          playFromPosition={0}
+          onPlaying={this.handleSongPlaying}
+        />
       </div>
     );
   }
