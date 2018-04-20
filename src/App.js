@@ -8,6 +8,8 @@ import Settings from 'material-ui-icons/Settings';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
 import RaisedButton from 'material-ui/RaisedButton';
+import TextField from './components/TextField';
+
 
 const styles = {
   heading: {
@@ -24,8 +26,11 @@ const styles = {
   },
   dialogHeight: {
     minHeight: 350
-  }
-
+  },
+  textField: {
+    marginRight: 10,
+    fontSize: 18
+  },
 }
 
 class App extends Component {
@@ -34,19 +39,57 @@ class App extends Component {
 
     this.state = {
       settingsOpen: false,
-      cycles: [1, 2]
+      cycles: [25, 5],
+      cyclesCopy: [25, 5]
     };
+
+    this.handleOpen = this.handleOpen.bind(this);
+    this.handleClose = this.handleClose.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-  handleOpen = () => {
+  handleOpen() {
     this.setState({settingsOpen: true});
   };
 
-  handleClose = () => {
+  handleClose() {
     this.setState({settingsOpen: false});
   };
 
+  handleSubmit() {
+    let cycles = JSON.parse(JSON.stringify(this.state.cyclesCopy));
+    this.setState({cycles: cycles, settingsOpen: false})
+  }
+
+  handleInput(index, event, value){
+    let cycles = this.state.cyclesCopy;
+    cycles[index] = value;
+    this.setState({cyclesCopy: cycles})
+  }
+
+  renderCycleInputs(cycles) {
+    let cycleInputs = [];
+
+    for (let index in cycles) {
+      const cycle = cycles[index];
+      cycleInputs.push(
+        <TextField
+          type='number'
+          style={styles.textField}
+          fullWidth={true}
+          floatingLabelText="Cycle Minutes"
+          value={cycle}
+          onChange={this.handleInput.bind(this, index)}
+        />
+      );
+    }
+
+    return cycleInputs
+  }
+
   render() {
+    const cycles = JSON.parse(JSON.stringify(this.state.cycles));
+
     return (
       <MuiThemeProvider>
         <Container fluid={true}>
@@ -69,7 +112,7 @@ class App extends Component {
             <Col xs={12} sm={6}>
               <div className='text-center'>
                 <Timer
-                  cycles={this.state.cycles}
+                  cycles={cycles}
                 />
               </div>
             </Col>
@@ -83,14 +126,14 @@ class App extends Component {
           autoScrollBodyContent='true'
         >
           <div style={styles.dialogHeight}>
-            These are your settings!
+            {this.renderCycleInputs(this.state.cyclesCopy)}
           </div>
           <Row>
             <Col xs={12}>
               <FlatButton
                 label="Submit"
                 primary={true}
-                onClick={this.handleClose}
+                onClick={this.handleSubmit}
                 className='float-right'
               />
               <FlatButton

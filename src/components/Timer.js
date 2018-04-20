@@ -59,6 +59,17 @@ class Timer extends Component {
     this.setState({ time: timeLeft });
   }
 
+  componentWillReceiveProps(newProps) {
+    const cyclesChanged = JSON.stringify(newProps.cycles) != JSON.stringify(this.props.cycles);
+    if (cyclesChanged) {
+      const cycle = newProps.cycles[this.state.cycleIndex];
+      const seconds = this.minutesToSeconds(cycle);
+      const timeLeft = this.secondsToTime(seconds);
+      this.setState({ seconds: seconds, time: timeLeft });
+      this.stopTimer();
+    }
+  }
+
   startTimer() {
     if (this.state.timerInterval === null) {
       this.setState({ timerInterval: setInterval(this.countDown, 1000) });
@@ -107,7 +118,7 @@ class Timer extends Component {
     const timer = this;
     setTimeout(function(){
       timer.setState({soundStatus: 'STOPPED'});
-    }, 850);
+    }, 900);
   }
 
   render() {

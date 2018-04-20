@@ -16,7 +16,8 @@ const styles = {
     overflow: "scroll"
   },
   textField: {
-    marginRight: 10
+    marginRight: 10,
+    fontSize: 20
   },
   missingText: {
     marginTop: 50,
@@ -159,6 +160,7 @@ class TodoList extends Component {
                   style={styles.textField}
                   fullWidth={true}
                   floatingLabelText="Add New Todo"
+                  floatingLabelStyle={{fontSize: 20}}
                   value={this.state.newTodo.name}
                   onChange={this.handleInput.bind(this)}
                   onEnter={this.addTodo.bind(this)}
