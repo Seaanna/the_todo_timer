@@ -53,7 +53,8 @@ class App extends Component {
   };
 
   handleClose() {
-    this.setState({settingsOpen: false});
+    let cycles = JSON.parse(JSON.stringify(this.state.cycles));
+    this.setState({settingsOpen: false, cyclesCopy: cycles});
   };
 
   handleSubmit() {
@@ -111,9 +112,7 @@ class App extends Component {
             </Col>
             <Col xs={12} sm={6}>
               <div className='text-center'>
-                <Timer
-                  cycles={cycles}
-                />
+                <Timer cycles={cycles} />
               </div>
             </Col>
           </Row>
