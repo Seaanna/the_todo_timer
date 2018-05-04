@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Row, Col } from 'reactstrap';
 import PlayArrow from 'material-ui-icons/PlayArrow';
+import FastForward from 'material-ui-icons/FastForward';
 import Stop from 'material-ui-icons/Stop';
 import Refresh from 'material-ui-icons/Refresh';
 import FloatingActionButton from 'material-ui/FloatingActionButton';
@@ -31,7 +32,8 @@ class Timer extends Component {
     this.countDown = this.countDown.bind(this);
     this.resetTimer = this.resetTimer.bind(this);
     this.secondsToTime = this.secondsToTime.bind(this);
-    this.handleSongPlaying = this.handleSongPlaying.bind(this)
+    this.handleSongPlaying = this.handleSongPlaying.bind(this);
+    this.nextCycle = this.nextCycle.bind(this);
   }
 
   secondsToTime(secs){
@@ -83,7 +85,20 @@ class Timer extends Component {
 
   resetTimer() {
     this.stopTimer();
-    this.setState({seconds: this.props.cycles[0]});
+    const resetSeconds = this.minutesToSeconds(this.props.cycles[0]);
+    this.setState({seconds: resetSeconds});
+  }
+
+  nextCycle(){
+    const cycles = this.props.cycles;
+    let cycleIndex = this.state.cycleIndex + 1;
+
+    if(cycles.length == cycleIndex){
+      cycleIndex = 0
+    }
+
+    let seconds = this.minutesToSeconds(this.props.cycles[cycleIndex]);
+    this.setState({seconds: seconds, cycleIndex: cycleIndex});
   }
 
   formatNumber(number){
@@ -122,6 +137,7 @@ class Timer extends Component {
   }
 
   render() {
+    const isTimerRunning = this.state.timerInterval;
     return(
       <div>
         <div className='digital' style={styles.timer}>
@@ -133,11 +149,22 @@ class Timer extends Component {
         <br/>
         <Row>
           <Col xs={4}>
-            <div className='text-right'>
-              <FloatingActionButton onClick={this.startTimer} backgroundColor="#43a047">
-                <PlayArrow />
-              </FloatingActionButton>
-            </div>
+            {
+              isTimerRunning &&
+              <div className='text-right'>
+                <FloatingActionButton onClick={this.nextCycle} backgroundColor="#43a047">
+                  <FastForward />
+                </FloatingActionButton>
+              </div>
+            }
+            {
+              !isTimerRunning && 
+              <div className='text-right'>
+                <FloatingActionButton onClick={this.startTimer} backgroundColor="#43a047">
+                  <PlayArrow />
+                </FloatingActionButton>
+              </div>
+            }
           </Col>
           <Col xs={4}>
             <div className='text-center'>
