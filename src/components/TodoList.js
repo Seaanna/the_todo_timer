@@ -13,7 +13,8 @@ const styles = {
   todoList: {
     height: 350,
     textAlign: "left",
-    overflow: "scroll"
+    overflowY: "scroll",
+    overflowX: "hidden",
   },
   textField: {
     marginRight: 10,
@@ -156,7 +157,7 @@ class TodoList extends Component {
               <br/>
             </Paper>
             <Row style={{marginTop: 50}}>
-              <Col xs={10}>
+              <Col xs={9} sm={10}>
                 <TextField
                   style={styles.textField}
                   fullWidth={true}
@@ -167,7 +168,7 @@ class TodoList extends Component {
                   onEnter={this.addTodo.bind(this)}
                 />
               </Col>
-              <Col xs={2}>
+              <Col xs={3} sm={2}>
                 <FloatingActionButton onClick={this.addTodo.bind(this)} backgroundColor="#1e88e5">
                   <ContentAdd />
                 </FloatingActionButton>
