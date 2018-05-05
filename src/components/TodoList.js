@@ -21,7 +21,8 @@ const styles = {
   },
   missingText: {
     marginTop: 50,
-    color: 'grey'
+    color: 'grey',
+    padding: '0px 30px'
   },
   todo: {
     padding: '15px 15px',
@@ -125,10 +126,10 @@ class TodoList extends Component {
 
   render() {
     return (
-      <div>
+      <div style={{marginBottom: 100}}>
         <br/>
         <Row>
-          <Col xs={{ size: 8, offset: 2 }}>
+          <Col xs={{ size: 12, offset: 0 }} sm={{ size: 10, offset: 1 }} lg={{ size: 8, offset: 2 }}>
             <Paper zDepth={1}>
               <div style={styles.todoList}>
                 {

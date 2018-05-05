@@ -12,7 +12,7 @@ import ding from '../sounds/DING.mp3'
 const styles = {
   timer: {
     fontSize: 30,
-    marginTop: 100
+    marginTop: 100,
   }
 }
 
@@ -139,7 +139,7 @@ class Timer extends Component {
   render() {
     const isTimerRunning = this.state.timerInterval;
     return(
-      <div>
+      <div style={{marginBottom: 80}}>
         <div className='digital' style={styles.timer}>
           {this.secondsToTime(this.state.seconds)}
         </div>
@@ -158,7 +158,7 @@ class Timer extends Component {
               </div>
             }
             {
-              !isTimerRunning && 
+              !isTimerRunning &&
               <div className='text-right'>
                 <FloatingActionButton onClick={this.startTimer} backgroundColor="#43a047">
                   <PlayArrow />

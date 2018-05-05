@@ -24,7 +24,9 @@ const styles = {
     paddingTop: 25,
     paddingBottom: 15,
     backgroundColor: '#eeeeee',
-    marginBottom: 25
+    marginBottom: 100,
+    backgroundColor: '#1e88e5',
+    color: 'white'
   },
   icon: {
     width: 30,
@@ -34,7 +36,7 @@ const styles = {
   },
   dialogHeight: {
     marginTop: 25,
-    minHeight: 350
+    minHeight: 200
   },
   textField: {
     marginRight: 10,
@@ -118,7 +120,7 @@ class App extends Component {
       const cycle = cycles[index];
       cycleInputs.push(
         <Row>
-          <Col xs={10}>
+          <Col xs={8} sm={10}>
             <TextField
               type='number'
               style={styles.textField}
@@ -128,7 +130,7 @@ class App extends Component {
               onChange={this.handleInput.bind(this, index)}
             />
           </Col>
-          <Col xs={2}>
+          <Col xs={4} sm={2}>
             {
               cyclesCount != 1 &&
               <span
@@ -158,18 +160,18 @@ class App extends Component {
               <h1 className='digital'>
               The Todo Timer
               <span className='float-right'>
-                <Settings style={styles.icon} onClick={this.handleOpen} color='black' />
+                <Settings style={styles.icon} onClick={this.handleOpen} color='white' />
               </span>
               </h1>
             </Col>
           </Row>
           <Row>
-            <Col xs={12} sm={6}>
+            <Col xs={{size: 12, order: 2}} md={{size: 6, order: 1}}>
               <div className='text-center'>
                 <TodoList />
               </div>
             </Col>
-            <Col xs={12} sm={6}>
+            <Col xs={{size: 12, order: 1}} md={{size: 6, order: 2}}>
               <div className='text-center'>
                 <Timer cycles={cycles} />
               </div>
@@ -181,12 +183,13 @@ class App extends Component {
           open={this.state.settingsOpen}
           onRequestClose={this.handleClose}
           autoScrollBodyContent='true'
+          contentStyle={{width: '80%'}}
         >
           <h2>Cycles</h2>
           <div style={styles.dialogHeight}>
             {this.renderCycleInputs(this.state.cyclesCopy)}
             <Row style={{marginTop: 30, marginBottom: 40}}>
-              <Col xs={10}>
+              <Col xs={8} sm={10}>
                 <TextField
                   type='number'
                   style={styles.textField}
@@ -196,7 +199,7 @@ class App extends Component {
                   onChange={this.handleNewCycleInput}
                 />
               </Col>
-              <Col xs={2}>
+              <Col xs={4} sm={2}>
                 <FloatingActionButton onClick={this.addCycle.bind(this)} backgroundColor="#1e88e5">
                   <ContentAdd />
                 </FloatingActionButton>
@@ -205,8 +208,9 @@ class App extends Component {
           </div>
           <Row>
             <Col xs={12}>
-              <FlatButton
+              <RaisedButton
                 label="Submit"
+                buttonStyle={{backgroundColor: '#1e88e5'}}
                 primary={true}
                 onClick={this.handleSubmit}
                 className='float-right'
